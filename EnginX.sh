@@ -61,7 +61,7 @@ case "$1" in
     -d|--django)
         check_python_version
         if [[ "$2" == "start" ]]; then
-            if [check_git_dir]; then
+            if check_git_dir; then
                 add_venv
             fi
             make_venv
