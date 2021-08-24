@@ -31,9 +31,7 @@ make_venv() {
 # activate venv
 activate_venv() {
     PWD=`pwd`
-    echo $PWD
     echo "Activating virtualenv venv"
-    echo "$PWD/venv/bin/activate"
     . "$PWD/venv/bin/activate"
 }
 
@@ -49,18 +47,36 @@ start_server(){
     python3 manage.py runserver
 }
 
-if [[ "$1" == "start" ]]; then
-    if [check_git_dir]; then
-        add_venv
+# check python version
+check_python_version() {
+    # check whether python3 is installed
+    if ! which python3 > /dev/null; then
+        echo "Python3 is not installed"
+        exit 1
     fi
-    make_venv
-    activate_venv
-    # install_requirements
-    # start_server
-elif [[ "$1" == "run" ]]; then
-    activate_venv
-    # start_server
-fi
+    echo "Python3 is installed"
+}
+
+case "$1" in 
+    -d|--django)
+        check_python_version
+        if [[ "$2" == "start" ]]; then
+            if [check_git_dir]; then
+                add_venv
+            fi
+            make_venv
+            activate_venv
+            install_requirements
+            start_server
+        elif [[ "$2" == "run" ]]; then
+            activate_venv
+            start_server
+        elif [[ "$2" == "stop" ]]; then
+            echo "Switching from venv .."
+            deactivate
+        fi;;
+esac
+
 
 
 
