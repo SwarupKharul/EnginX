@@ -1,0 +1,54 @@
+#!/bin/sh
+
+PYTHON_FRAMEWORKS="pythonsupport" # Python frameworks
+
+
+source "$PYTHON_FRAMEWORKS".sh # Load functions Python frameworks
+
+case "$1" in 
+    -d|--django)
+        check_python_version
+        if [[ "$2" == "start" ]]; then
+            django_start
+        elif [[ "$2" == "startproject" ]]; then
+            django_startproject $3 $4
+        elif [[ "$2" == "run" ]]; then
+            django_run
+        elif [[ "$2" == "stop" ]]; then
+            django_stop
+        fi
+        ;;
+    -f|--flask)
+        check_python_version
+        if [[ "$2" == "start" ]]; then
+            e_header "Fueling your engine"
+            flask_start
+        elif [[ "$2" == "run" ]]; then
+            e_header "Powering up  "
+            flask_run
+        elif [[ "$2" == "stop" ]]; then
+            flask_stop
+        fi
+        ;;
+    -h|--help)
+        # print header as enginx
+echo " _________                                          __       __
+|   ______|                         __             \  \    /  /
+|  |                               |__|             \  \  /  /
+|  |____     __ ____      _____     __   __ ____     \  \/  /
+|   ____|   |  |__  \   /  ___  \  |  | |  |__  \     |    |
+|  |        |  |  |  | |  |   |  | |  | |  |  |  |   /  /\  \ 
+|  |______  |  |  |  | |  |___|  | |  | |  |  |  |  /  /  \  \ 
+|_________| |__|  |__|  \ ____   | |__| |__|  |__| /__/    \__\ 
+                          ____|  |  
+                         |_____ /
+"
+        echo "Usage: $0 [OPTIONS]"
+        echo "  -d, --django"
+        echo "    Django framework"
+        echo "  -f, --flask"
+        echo "    Flask framework"
+        echo "  -h, --help"
+        echo "    Show this help"
+        ;;
+esac

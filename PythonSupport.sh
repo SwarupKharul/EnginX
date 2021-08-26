@@ -1,12 +1,15 @@
 #!/bin/sh
 
+# source logger
+LOGGER="logger"
+source ${LOGGER}.sh
 
 # open .gitignore and check whether venv is already in it
 # if not, add it
 add_venv() {
     if ! grep -q "venv" .gitignore; then
-        echo "Adding venv to .gitignore"
         echo "venv" >> .gitignore
+        e_success "Added venv to .gitignore"
     fi
 }
 
@@ -16,7 +19,7 @@ check_git_dir() {
         echo "This is not a git repository"
         return 0
     else
-        echo "This is a git repository"
+        e_success "This is a git repository"
         return 1
     fi
 }
@@ -24,17 +27,16 @@ check_git_dir() {
 # make virtualenv venv
 make_venv() {
     if [ ! -d venv ]; then
-        echo "Making virtualenv venv"
         python3 -m venv venv
+        e_success "virtualenv venv created successfully"
     fi
 }
 
 # activate venv
 activate_venv() {
     PWD=`pwd`
-    eval source 
-    echo "Activating virtualenv venv"
     eval source "venv/bin/activate"
+    e_success "Activated virtualenv venv"
 }
 
 # alias activate = ". venv/bin/activate"
@@ -44,38 +46,111 @@ install_requirements() {
     pip3 install -r requirements.txt
 }
 
-# Start django server
-start_server(){ 
-    python3 manage.py runserver
-}
-
 # check python version
 check_python_version() {
     # check whether python3 is installed
     if ! which python3 > /dev/null; then
-        echo "Python3 is not installed"
-        exit 1
+        e_warning "Python3 is not installed"
+        e_heading "Installing python3"
+        sudo apt-get install python3-pip > /dev/null
+        e_success "Python3 installed successfully"
     fi
-    echo "Python3 is installed"
 }
 
+check_virtualenv(){
+    # check whether virtualenv is installed
+    if ! which virtualenv > /dev/null; then
+        e_warning "Virtualenv is not installed"
+        e_heading "Installing virtualenv"
+        sudo pip3 install virtualenv > /dev/null
+        e_success "Virtualenv installed successfully"
+    fi
+}
 
-d_start(){
+# Start django server
+start_django_server(){ 
+    python3 manage.py runserver
+}
+
+# Start Flask server
+start_flask_server(){
+    flask run
+}
+
+# Setup up environment for django project 
+django_start(){
             if check_git_dir; then
                 add_venv
             fi
             make_venv
             activate_venv
             install_requirements
-            start_server
+            start_django_server
 }
 
-d_stop(){
+# Setup up django project
+django_startproject(){
+    e_header "Setting up your Engine"
+    PWD=`pwd`
+    if check_git_dir; then
+        add_venv
+    fi
+    # check whether virtualenv is installed
+
+    e_header "setting up your virtual environment"
+    make_venv
+    activate_venv
+    pip3 install django &> /dev/null
+    django-admin startproject $1
+    deactivate
+    cd $PWD/$1
+    # move venv to project
+    mv ../venv .
+    touch requirements.txt 
+    activate_venv 
+    e_heading "installing django dependencies...."
+    python3 manage.py startapp $2
+    e_header "You are good to go"
+}
+
+# deactivate venv
+django_stop(){
         echo "Switching from venv .."
         deactivate
 }
 
-d_run(){
-    activate_venv
-    start_server
+# start django server
+django_run(){
+    # check whether venv is activated
+    if [ -z "$VIRTUAL_ENV" ]; then
+        e_warning "venv is not activated"
+        activate_venv
+    fi
+    start_django_server
+}
+
+# Setup up environment for flask project
+flask_start(){
+            if check_git_dir; then
+                add_venv
+            fi
+            make_venv
+            activate_venv
+            install_requirements
+            start_flask_server
+}
+
+flask_stop(){
+        echo "Switching from venv .."
+        deactivate
+}
+
+# start flask server
+flask_run(){
+    # check whether venv is activated
+    if [ -z "$VIRTUAL_ENV" ]; then
+        e_warning "venv is not activated"
+        activate_venv
+    fi
+    start_flask_server
 }
