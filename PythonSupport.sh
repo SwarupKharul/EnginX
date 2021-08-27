@@ -16,7 +16,7 @@ add_venv() {
 # check whether .git directory exists
 check_git_dir() {
     if [ ! -d .git ]; then
-        echo "This is not a git repository"
+        e_heading "This is not a git repository"
         return 0
     else
         e_success "This is a git repository"
@@ -27,7 +27,7 @@ check_git_dir() {
 # make virtualenv venv
 make_venv() {
     if [ ! -d venv ]; then
-        python3 -m venv venv
+        sudo virtualenv venv
         e_success "virtualenv venv created successfully"
     fi
 }
@@ -35,7 +35,7 @@ make_venv() {
 # activate venv
 activate_venv() {
     PWD=`pwd`
-    eval source "venv/bin/activate"
+    source venv/bin/activate
     e_success "Activated virtualenv venv"
 }
 
@@ -43,6 +43,10 @@ activate_venv() {
 
 # install requirements
 install_requirements() {
+    # make sure requirements.txt exists
+    if [ ! -f requirements.txt ]; then
+        e_error "requirements.txt does not exist"
+        exit 1
     pip3 install -r requirements.txt
 }
 
@@ -51,8 +55,9 @@ check_python_version() {
     # check whether python3 is installed
     if ! which python3 > /dev/null; then
         e_warning "Python3 is not installed"
-        e_heading "Installing python3"
-        sudo apt-get install python3-pip > /dev/null
+        e_arrow "Installing python3"
+        sudo apt-get install python3
+        sudo apt-get install python3-pip
         e_success "Python3 installed successfully"
     fi
 }
@@ -61,8 +66,9 @@ check_virtualenv(){
     # check whether virtualenv is installed
     if ! which virtualenv > /dev/null; then
         e_warning "Virtualenv is not installed"
-        e_heading "Installing virtualenv"
-        sudo pip3 install virtualenv > /dev/null
+        e_arrow "Installing virtualenv"
+        sudo pip3 install virtualenv
+        sudo apt-get install python3-venv -y
         e_success "Virtualenv installed successfully"
     fi
 }
@@ -97,7 +103,8 @@ django_startproject(){
     fi
     # check whether virtualenv is installed
 
-    e_header "setting up your virtual environment"
+    e_header "Setting up your virtual environment"
+    check_virtualenv
     make_venv
     activate_venv
     pip3 install django &> /dev/null

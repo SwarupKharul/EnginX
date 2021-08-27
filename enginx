@@ -43,12 +43,13 @@ echo " _________                                          __       __
                           ____|  |  
                          |_____ /
 "
-        echo "Usage: $0 [OPTIONS]"
-        echo "  -d, --django"
-        echo "    Django framework"
-        echo "  -f, --flask"
-        echo "    Flask framework"
-        echo "  -h, --help"
-        echo "    Show this help"
+        echo "Usage:"
+        echo "  $0 [option] <command> <arg1> <arg2>"
+        echo "  $0 --django startproject <project_name> <app_name>"
+        echo "   "
+        echo "Options:"
+        echo "  -d, --django    For Django framework" 
+        echo "  -f, --flask     For Flask framework"
+        echo "  -h, --help      Show this screen"
         ;;
 esac
