@@ -47,6 +47,7 @@ install_requirements() {
     if [ ! -f requirements.txt ]; then
         e_error "requirements.txt does not exist"
         exit 1
+    fi
     pip3 install -r requirements.txt
 }
 
@@ -161,3 +162,5 @@ flask_run(){
     fi
     start_flask_server
 }
+
+
