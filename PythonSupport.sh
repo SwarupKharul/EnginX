@@ -69,7 +69,6 @@ check_virtualenv(){
         e_warning "Virtualenv is not installed"
         e_arrow "Installing virtualenv"
         sudo pip3 install virtualenv
-        sudo apt-get install python3-venv -y
         e_success "Virtualenv installed successfully"
     fi
 }
