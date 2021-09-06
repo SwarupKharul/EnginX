@@ -22,7 +22,7 @@
 
 Give a ⭐ if this tool made your life easier!
 
-Spread the word to your geek fellows to save thier time!
+Spread the word to your geek fellows to save their time!
 
 ## ⚖ License
 
