@@ -1,4 +1,4 @@
-<img src="enginx%20logo.jpg" width="100" height="100">
+<img src="enginx%20logo.jpg" style="width:100%; height:50%">
 
 ![Language](https://img.shields.io/badge/language-bash-blue)
 ![GitHub License](https://img.shields.io/github/license/swarupkharul/enginx)
