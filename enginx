@@ -43,6 +43,8 @@ echo " _________                                          __       __
                           ____|  |  
                          |_____ /
 "
+        e_header "CLI Tool for creating and setting up your projects"
+        e_shameless_plug "Authored by: Swarup Kharul (https://github.com/SwarupKharul)"
         echo "Usage:"
         echo "  $0 [option] <command> <arg1> <arg2>"
         echo "  $0 --django startproject <project_name> <app_name>"
