@@ -1,4 +1,4 @@
-![Logo](enginx%20logo.jpg)
+<img src="enginx%20logo.jpg">
 
 ![Language](https://img.shields.io/badge/language-bash-blue)
 ![GitHub License](https://img.shields.io/github/license/swarupkharul/enginx)
