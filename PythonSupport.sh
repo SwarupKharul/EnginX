@@ -39,8 +39,6 @@ activate_venv() {
     e_success "Activated virtualenv venv"
 }
 
-# alias activate = ". venv/bin/activate"
-
 # install requirements
 install_requirements() {
     # make sure requirements.txt exists
