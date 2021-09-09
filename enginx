@@ -30,6 +30,9 @@ case "$1" in
         framework="flask"
         common_commands $framework $2 $3 $4
         ;;
+    -fs|--fastapi)
+        framework="fastapi"
+        common_commands $framework $2 $3 $4
     -h|--help)
         # print header as enginx
 echo " _________                                          __       __

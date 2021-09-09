@@ -111,8 +111,8 @@ startproject_django(){
     cd $PWD/$1
     # move venv to project
     mv ../venv .
-    touch requirements.txt 
-    activate_venv 
+    activate_venv
+    pip3 freeze > requirements.txt 
     e_heading "installing django dependencies...."
     python3 manage.py startapp $2
     e_header "You are good to go"
@@ -160,6 +160,44 @@ run_flask(){
     start_flask_server
 }
 
+startproject_fastapi(){
+    if check_git_dir; then
+        add_venv
+    fi
+    make_venv
+    activate_venv
+    pip3 install fastapi
+    pip3 install uvicorn
+    echo "from fastapi import FastAPI" > main.py
+    echo "app = FastAPI()" >> main.py
+    echo "app.add_route('/', lambda: 'Hello World')" >> main.py
+    pip3 freeze > requirements.txt
+    uvicorn main:app --reload
+}
+
+start_fastapi(){
+    if check_git_dir; then
+        add_venv
+    fi
+    make_venv
+    activate_venv
+    install_requirements
+    uvicorn main:app --reload
+}
+
+
+fastapi_run(){
+    if [ -z "$VIRTUAL_ENV" ]; then
+        e_warning "venv is not activated"
+        activate_venv
+    fi
+    uvicorn main:app --reload
+}
+
+fastapi_stop(){
+    echo "Switching from venv .."
+    deactivate
+}
 
 
 
