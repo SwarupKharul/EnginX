@@ -5,30 +5,30 @@ PYTHON_FRAMEWORKS="pythonsupport" # Python frameworks
 
 source "$PYTHON_FRAMEWORKS".sh # Load functions Python frameworks
 
+common_commands() {
+    check_python_version
+        if [[ "$2" == "start" ]]; then
+            echo "Starting $1"
+            start_$framework
+        elif [[ "$2" == "startproject" ]]; then
+            startproject_$framework $3 $4
+        elif [[ "$2" == "run" ]]; then
+            run_$framework
+        elif [[ "$2" == "stop" ]]; then
+            stop_$framework
+        fi
+}
+
+# set a variable to the value of the first argument
+framework=""
 case "$1" in 
     -d|--django)
-        check_python_version
-        if [[ "$2" == "start" ]]; then
-            django_start
-        elif [[ "$2" == "startproject" ]]; then
-            django_startproject $3 $4
-        elif [[ "$2" == "run" ]]; then
-            django_run
-        elif [[ "$2" == "stop" ]]; then
-            django_stop
-        fi
+        framework="django"
+        common_commands $framework $2 $3 $4
         ;;
     -f|--flask)
-        check_python_version
-        if [[ "$2" == "start" ]]; then
-            e_header "Fueling your engine"
-            flask_start
-        elif [[ "$2" == "run" ]]; then
-            e_header "Powering up  "
-            flask_run
-        elif [[ "$2" == "stop" ]]; then
-            flask_stop
-        fi
+        framework="flask"
+        common_commands $framework $2 $3 $4
         ;;
     -h|--help)
         # print header as enginx

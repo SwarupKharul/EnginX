@@ -44,7 +44,7 @@ install_requirements() {
     # make sure requirements.txt exists
     if [ ! -f requirements.txt ]; then
         e_error "requirements.txt does not exist"
-        exit 1
+        return 0
     fi
     pip3 install -r requirements.txt
 }
@@ -82,7 +82,7 @@ start_flask_server(){
 }
 
 # Setup up environment for django project 
-django_start(){
+start_django(){
             if check_git_dir; then
                 add_venv
             fi
@@ -93,7 +93,7 @@ django_start(){
 }
 
 # Setup up django project
-django_startproject(){
+startproject_django(){
     e_header "Setting up your Engine"
     PWD=`pwd`
     if check_git_dir; then
@@ -119,13 +119,13 @@ django_startproject(){
 }
 
 # deactivate venv
-django_stop(){
+stop_django(){
         echo "Switching from venv .."
         deactivate
 }
 
 # start django server
-django_run(){
+run_django(){
     # check whether venv is activated
     if [ -z "$VIRTUAL_ENV" ]; then
         e_warning "venv is not activated"
@@ -135,7 +135,7 @@ django_run(){
 }
 
 # Setup up environment for flask project
-flask_start(){
+start_flask(){
             if check_git_dir; then
                 add_venv
             fi
@@ -145,13 +145,13 @@ flask_start(){
             start_flask_server
 }
 
-flask_stop(){
+stop_flask(){
         echo "Switching from venv .."
         deactivate
 }
 
 # start flask server
-flask_run(){
+run_flask(){
     # check whether venv is activated
     if [ -z "$VIRTUAL_ENV" ]; then
         e_warning "venv is not activated"
@@ -160,4 +160,8 @@ flask_run(){
     start_flask_server
 }
 
+
+
+
+    
 
