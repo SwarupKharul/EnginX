@@ -4,6 +4,7 @@
 LOGGER="logger"
 . ${LOGGER}.sh
 
+DOCKER_PORT=8000
 
 # Start docker
 function start_docker() {
@@ -29,4 +30,19 @@ function build_docker_image() {
         e_success "Docker image built"
     fi
 
+}
+
+function run_docker_image(){
+    if [ -f "docker-compose.yml" ]; then
+        # Run docker image
+        e_arrow "Running docker image...."
+        sudo docker-compose up -d
+        e_success "Docker image running"
+    else
+        e_error "docker-compose.yml not found"
+        # Run docker image
+        e_arrow "Running docker image...."
+        sudo docker run -d -p ${DOCKER_PORT}:${DOCKER_PORT} ${DOCKER_IMAGE}
+        e_success "Docker image running"
+    fi
 }
