@@ -8,6 +8,19 @@ DOCKER_PORT=8000
 
 # Start docker
 function start_docker() {
+    # if docker is not installed then install it
+    if ! command -v docker >/dev/null 2>&1; then
+        e_warning "Docker is not installed. Installing it now..."
+        sudo apt install -y docker
+        e_success "Docker is installed."
+    fi
+
+    # if docker-compose is not installed then install it
+    if ! command -v docker-compose >/dev/null 2>&1; then
+        e_warning "Docker-compose is not installed. Installing it now..."
+        sudo apt install -y docker-compose
+        e_success "Docker-compose is installed."
+    fi
     # Start docker
     e_arrow "Starting docker...."
     sudo service docker start
