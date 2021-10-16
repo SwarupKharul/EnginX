@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 # source logger
 LOGGER="logger"
-source ${LOGGER}.sh
+. ${LOGGER}.sh
 
 # open .gitignore and check whether venv is already in it
 # if not, add it
@@ -35,7 +35,8 @@ make_venv() {
 # activate venv
 activate_venv() {
     PWD=`pwd`
-    source venv/bin/activate
+    echo 'hello from venv'
+    . venv/bin/activate
     e_success "Activated virtualenv venv"
 }
 

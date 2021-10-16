@@ -1,27 +1,39 @@
-#!/bin/sh
+#!/bin/bash
 
-PYTHON_FRAMEWORKS="pythonsupport" # Python frameworks
+PYTHON_FRAMEWORKS="python_support" # Python frameworks
+DOCKER_SUPPORT="docker_support" # Docker support
 
 
-source "$PYTHON_FRAMEWORKS".sh # Load functions Python frameworks
+. "$PYTHON_FRAMEWORKS".sh # Load functions Python frameworks
+. "$DOCKER_SUPPORT".sh # Load functions Docker support
 
 common_commands() {
     check_python_version
-        if [[ "$2" == "start" ]]; then
+        if [ "$2" == "start" ] 
+        then
             echo "Starting $1"
             start_$framework
-        elif [[ "$2" == "startproject" ]]; then
+        elif [ "$2" == "startproject" ] 
+        then
             startproject_$framework $3 $4
-        elif [[ "$2" == "run" ]]; then
+        elif [ "$2" == "run" ] 
+        then
             run_$framework
-        elif [[ "$2" == "stop" ]]; then
+        elif [ "$2" == "stop" ] 
+        then
             stop_$framework
+        else 
+            echo "Command not found"
         fi
 }
 
 # set a variable to the value of the first argument
 framework=""
 case "$1" in 
+    -do|--docker)
+        framework="docker"
+        common_commands $framework $2 $3 $4
+        ;;
     -d|--django)
         framework="django"
         common_commands $framework $2 $3 $4
@@ -33,6 +45,7 @@ case "$1" in
     -fs|--fastapi)
         framework="fastapi"
         common_commands $framework $2 $3 $4
+        ;;
     -h|--help)
         # print header as enginx
 echo " _________                                          __       __

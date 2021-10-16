@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Setting term colors
 bold=$(tput bold)
 underline=$(tput sgr 0 1)
